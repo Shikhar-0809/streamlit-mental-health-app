@@ -9,12 +9,19 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import nltk
 
-# --- Pre-load NLTK data (for deployment environment) ---
+# --- NLTK Data Download ---
+# This is a more robust way to ensure NLTK data is available in the deployment environment.
 try:
-    stopwords.words('english')
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
+try:
+    nltk.data.find('corpora/stopwords')
 except LookupError:
     nltk.download('stopwords')
-    nltk.download('punkt')
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
     nltk.download('wordnet')
 
 # --- Load Saved Model & Vectorizer ---
@@ -22,7 +29,7 @@ try:
     vectorizer = pickle.load(open('tfidf_vectorizer.pkl', 'rb'))
     model = pickle.load(open('lr_model.pkl', 'rb'))
 except FileNotFoundError:
-    st.error("Model files not found. Please run the training script to create them.")
+    st.error("Model files not found. Please ensure they are in the repository.")
     st.stop()
 
 # --- Preprocessing Function (Must be identical to the one used in training) ---
