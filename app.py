@@ -9,12 +9,19 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 import nltk
 
+
+
 # --- NLTK Data Download ---
 # This is a more robust way to ensure NLTK data is available in the deployment environment.
+# --- NLTK Data Download ---
 try:
     nltk.data.find('tokenizers/punkt')
 except LookupError:
     nltk.download('punkt')
+try:
+    nltk.data.find('tokenizers/punkt_tab/english')
+except LookupError:
+    nltk.download('punkt_tab')   # <--- Add this for NLTK >=3.8
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
@@ -23,6 +30,7 @@ try:
     nltk.data.find('corpora/wordnet')
 except LookupError:
     nltk.download('wordnet')
+
 
 # --- Load Saved Model & Vectorizer ---
 try:
